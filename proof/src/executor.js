@@ -147,30 +147,6 @@ export default class Analyzer {
                                 this.payload = "^";
                             } else if (decodedChar == "$" || this.payload.length == 0 || this.payload.slice(-1) != decodedChar) {
                                 this.payload += decodedChar;
-                                // if (Util.minOperations("^" + data + "$", this.payload) >= 0.6) {
-                                //     console.log("[DEBUG] masterCache - BEFORE: ", this.masterCache)
-
-                                //     let reqEnergy = Object.keys(this.masterCache).map(char => this.masterCache[char]['energy']);
-                                //     console.log(`[DEBUG] Energy :` + reqEnergy.join('*-*'))
-                                //     let success = reqEnergy.filter(x => x > 84).length >= Math.ceil(this.payload.length / 2)
-                                //     this.notify(this.payload, Math.max(...reqEnergy), success);
-
-                                //     if (success) {
-
-                                //         if (this.lastForceSchedule && this.iterator + 1 - this.lastForceSchedule <= 2) {
-                                //             this.alertUserVibrate(true);
-                                //             this.notify(this.payload, Math.max(...reqEnergy), success, "activateRed");
-                                //         } else {
-                                //             this.alertUserVibrate(false);
-                                //         }
-                                //         this.queue.enqueue(1);
-                                //         console.warn("[DEBUG] payload: ", this.payload);
-                                //         console.warn("[DEBUG] masterCache: ", this.masterCache);
-                                //         this.masterCache = {};
-                                //         this.payload = ""
-                                //         this.forceShedule(500, Math.max(...reqEnergy)); //hardcoded
-                                //     }
-                                // }
                                 if (decodedChar == "$") {
                                     this.notify(this.payload);
                                     this.payload = ""

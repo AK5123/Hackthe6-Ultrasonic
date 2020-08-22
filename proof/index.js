@@ -5,12 +5,12 @@ import Analyzer from './src/executor.js';
 function bootstrap(p) {
 
     let config = {
-        alphabet: '^ABC123$',
+        alphabet: '^ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_$',
         data: 'A',
-        charDuration: 0.1,
-        rampDuration: 0.04,
-        freqMin: 18500,
-        freqMax: 19000,
+        charDuration: 0.3,
+        rampDuration: 0.12,
+        freqMin: 17500,
+        freqMax: 19500,
         freqError: 50,
         threshold: 0,
         energyFilter: 115,
@@ -25,10 +25,11 @@ function bootstrap(p) {
 
     function cb(params, energy, success, activate) {
         if (params[0] === "^" && params[params.length-1] === "$"){
-            console.log("[INFO] RECORDED", params, energy, success);
+            params = params.slice(1,params.length-1)
+            params = params.split("").filter((e) => e != "_")
+            document.querySelector("h2").innerHTML ="Result: "+params.join("")
+            console.log("[INFO] RECORDED", params.join(""), energy, success);
         }
-     
-    
     }
 
 
@@ -50,7 +51,16 @@ function bootstrap(p) {
     }
 
     document.querySelector("#send").onclick = () => {
-        analyzer.send(document.querySelector("#data").value)
+        let payload = document.querySelector("#data").value.toUpperCase().replace(/\s/g, '')
+        let tpay = ""
+        payload.split("").forEach(ele => {
+            if(tpay.slice(-1) === ele){
+                tpay += "_"
+            }
+            tpay += ele;
+        })
+        console.log(tpay)
+        analyzer.send(tpay)
     }
 
     document.querySelector("#receive").onclick = () => {
