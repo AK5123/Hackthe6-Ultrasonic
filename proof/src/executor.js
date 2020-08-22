@@ -1,5 +1,5 @@
 import Util from './utility';
-import Sonic from '../vendor/sonic';
+import Sonic from '../sonic';
 
 
 export default class Analyzer {
@@ -30,9 +30,6 @@ export default class Analyzer {
 
         // encoding setup - record and store buffer
         this.sonic = new Sonic(this.config);
-
-        
-
         // decode setup
         this.freqRanges = this.getFreqRanges();
         this.audioContext = new window.AudioContext;
@@ -51,6 +48,7 @@ export default class Analyzer {
 
 
     setup() {
+        let cnv = this.p5.createCanvas(1200, 600);
         this.p5.noLoop();
     }
 
@@ -89,10 +87,24 @@ export default class Analyzer {
                 data
             } = this.config;
 
+            // SETUP FFT lGRAPH
+            this.p5.background(0);
+            this.p5.noStroke();
+            this.p5.fill(240, 150, 150);
+
             var spectrum = [];
-            if (!this.iamstopped) {
+            if (true) {
                 spectrum = this.fft.analyze();
             }
+
+            //CRITICAL
+            //DRAW PEAKS
+            for (let i = 0; i < spectrum.length; i++) {
+                let x = this.p5.map(i, 0, spectrum.length, 0, this.p5.width);
+                let h = -this.p5.height + this.p5.map(spectrum[i], 0, 255, this.p5.height, 0);
+                this.p5.rect(x, this.p5.height, this.p5.width / spectrum.length, h)
+            }
+            this.p5.endShape();
 
             // DECODE---------------
             let testEnergyArr = this.freqRanges.map((x) => {
@@ -113,10 +125,11 @@ export default class Analyzer {
                 if (freqMin - f < freqError && f <= freqMax) {
 
                     let decodedChar = this.sonic.freqToChar(f);
+                    console.log(decodedChar)
 
                     let energy = testEnergyArr[alphabet.indexOf(decodedChar)]
 
-                    if (energy <= 160 && energy >= 70) {
+                    if (true) {
                         if (decodedChar in this.masterCache) {
                             this.masterCache[decodedChar]['energy'] = Math.max(energy, this.masterCache[decodedChar]['energy'])
                             this.masterCache[decodedChar]['count'] += 1
@@ -161,6 +174,7 @@ export default class Analyzer {
                                 if (decodedChar == "$") {
                                     this.notify(this.payload);
                                     this.payload = ""
+                                    this.masterCache = {};
                                 }
                             }
 

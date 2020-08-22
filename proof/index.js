@@ -24,8 +24,9 @@ function bootstrap(p) {
 
 
     function cb(params, energy, success, activate) {
-
-        console.log("[INFO] RECORDED", params, energy, success);
+        if (params[0] === "^" && params[params.length-1] === "$"){
+            console.log("[INFO] RECORDED", params, energy, success);
+        }
      
     
     }
@@ -44,11 +45,18 @@ function bootstrap(p) {
         analyzer.draw();
     }
 
-    //analyzer.init()
+    document.querySelector("#activate").onclick = () => {
+        analyzer.init(cb)
+    }
 
-    // send events
-    // receive
-    //analyzer init
+    document.querySelector("#send").onclick = () => {
+        analyzer.send(document.querySelector("#data").value)
+    }
+
+    document.querySelector("#receive").onclick = () => {
+        analyzer.receive()
+    }
+
 }
 
 
