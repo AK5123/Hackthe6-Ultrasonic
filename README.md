@@ -38,6 +38,6 @@ Our app sends and listens for near-ultrasonic sound to reliably detect any phone
 alt="IMAGE ALT TEXT HERE" width="240" height="180" /></a>
 </div>
 
-Live demo of app 🚀 at https://sonic.surge.sh/ - Keep your volume at full while trying
+Live demo of app 🚀 at https://sonic.surge.sh/  (Keep your volume at full while trying and use Chrome browser for better experience)
 
 Nearing completion :)
